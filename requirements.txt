@@ -1,1 +1,9 @@
 streamlit
+watchdog
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+ipykernel
+memory_profiler
