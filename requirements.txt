@@ -9,3 +9,4 @@ ipykernel
 memory_profiler
 nltk
 spacy
+svgling

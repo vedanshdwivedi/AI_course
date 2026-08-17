@@ -56,3 +56,67 @@ Compared to Stemming, Lemmatisation is slower.
 ## Stopwords in NLP
 
 Certain words like I, are, is, that, their etc do not play any significant role in determining the meaning of the sentence. For example, in the sentence: "I need a DevOps engineer to make an existing Swiss healthcare app run entirely without Supabase Cloud." These needs to be removed from the texts to keep the significant words only (depends on usecase).
+
+## Parts of Speech Tagging in NLP
+
+In the lemmatisation, we observed that parts of speech tagging is a very crucial process, since the output got affected based on the part of the speech we used to provide in the WordNetLemmatizer (as the pos argument).
+
+## Named entity recognition
+
+Named Entity Recognition (NER) is a subtask of information extraction that seeks to locate and classify named entities mentioned in unstructured text into pre-defined categories such as persons, organizations, locations, medical codes, time expressions, quantities, monetary values, percentages, etc.
+
+Named entity recognition (NER) is the process of identifying and categorizing key information (entities) in text.
+
+## Steps for solving NLP Problems
+
+Lets say we want to solve a sentiment analysis problem. To solve it we would have lets say a corpus. We would take the following steps
+
+#### Text Preprocessing
+
+- Tokenisation
+- Lowercase conversion
+- Regular Expression
+- Stemming
+- Lemmatisation
+- Stopwords
+- Convert text to vectors
+- Train the ML model
+
+## Text to vector conversions
+
+We need to convert text data to vector data in order to feed it to Machine Learning models. These are some of the ways:
+
+1. One-Hot Encoding
+2. Bag of words (BOW)
+3. TF-IDF
+4. word2vec
+5. Average word2vec
+
+## One Hot Encoding
+
+One-Hot Encoding is no longer being used in NLP usecases, but it is important to understand
+
+So let us consider three statements:
+
+S1 -> The food is good
+S2 -> The food is bad
+S3 -> Pizza is amazing
+
+Now, the unique vocabulary in the above statements are
+
+<!-- Vocabulary  -> The    food    is  good    bad     Pizza   amazing
+The         ->  1       0       0      0       0           0       0
+Food        ->  0       1       0      0       0           0       0
+is          ->  0       0       1      0       0           0       0
+Good        ->  0       0       0      1       0           0       0
+Bad         ->  0       0       0      0       1           0       0
+Pizza       ->  0       0       0      0       0           1       0
+Amazing     ->  0       0       0      0       0           0       1 -->
+
+Now, the Statements can be represented as
+
+S1 -> [1, 1, 1, 1, 0, 0, 0]
+S2 -> [1, 1, 1, 0, 1, 0, 0]
+S3 -> [0, 0, 1, 0, 0, 1, 1]
+
+This is how we convert words to vector using one-hot encoding.
