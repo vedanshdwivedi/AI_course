@@ -104,19 +104,77 @@ S3 -> Pizza is amazing
 
 Now, the unique vocabulary in the above statements are
 
-<!-- Vocabulary  -> The    food    is  good    bad     Pizza   amazing
-The         ->  1       0       0      0       0           0       0
-Food        ->  0       1       0      0       0           0       0
-is          ->  0       0       1      0       0           0       0
-Good        ->  0       0       0      1       0           0       0
-Bad         ->  0       0       0      0       1           0       0
-Pizza       ->  0       0       0      0       0           1       0
-Amazing     ->  0       0       0      0       0           0       1 -->
+<!-- Voca.       The     food    is    good     bad     Pizza   amazing
+The           ->  1       0       0      0       0           0       0
+Food          ->  0       1       0      0       0           0       0
+is            ->  0       0       1      0       0           0       0
+Good          ->  0       0       0      1       0           0       0
+Bad           ->  0       0       0      0       1           0       0
+Pizza         ->  0       0       0      0       0           1       0
+Amazing       ->  0       0       0      0       0           0       1 -->
 
 Now, the Statements can be represented as
 
-S1 -> [1, 1, 1, 1, 0, 0, 0]
-S2 -> [1, 1, 1, 0, 1, 0, 0]
-S3 -> [0, 0, 1, 0, 0, 1, 1]
+S1 -> [[1, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 0, 0, 0]]
+S2 -> [[1, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0, 0]]
+S3 -> [[0, 0, 0, 0, 0, 1, 0], [0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 1, 0, 0, 0]]
 
 This is how we convert words to vector using one-hot encoding.
+
+### Advantages and Disadvantages of OHE
+
+#### Advantages
+
+1. Easy to implement in Python
+2. Since we have fixed the size of the vectors (based on the vocabulary), we can easily store the data in a 2D matrix or DataFrame
+
+#### Disadvantages
+
+1. Size of vector increases with the number of documents (vocabulary size) [Sparse Matrix gets created which results in overfitting]
+2. No semantic meaning is captured. For example, if we add "pizza" in our corpus, the vector for "pizza" will be completely different from "burger", even though they are similar
+3. If we add new words to the corpus, we need to regenerate the entire vector space
+
+## Bag of Words (BOW)
+
+This is a simple technique that can be used for small-text problem statements. Some of the popular usecases are spam-classification, review analysis, etc. To understand this technique let us consider the following statements:
+
+S1 -> He is a good boy.
+S2 -> She is a good girl.
+S3 -> Boy and girl are good.
+
+Step 1: We will make the text lowercase.
+Step 2: Eliminate Stopwords
+
+This makes the statements as follows:
+
+S1 -> [good, boy]
+S2 -> [good, girl]
+S3 -> [boy, girl, good]
+
+Now our vocabulary has 3 words. We can create a frequency distribution table (sorted in descending order of frequency) as follows:
+
+good -> 3
+boy -> 2
+girl -> 2
+
+In a bigger dataset, we can have more words in the vocabulary. There can be some words which are present only once, we can select the top 10-20 words based on the dataset. Now statements can be represented as follows:
+
+S1 -> [1, 1, 0]
+S2 -> [1, 0, 1]
+S3 -> [1, 1, 1]
+
+Here the vector is representing [good, boy, girl]
+If we compare the implementation with that of One-hot Encoding, we would see how simple it was to convert statements to vectors (the size is also small). Also, the BOW (Bag of words) can be either binary or non-binary in nature. In binary-BOW, the vectors will have 0-1 depending on presence of the word, whereas, in binary-BOW, the vector will contain frequency of the occurance of the word in the sentence.
+
+#### Advantages
+
+1. Easy to implement.
+2. Output is of fixed-size (Good for ML algorithms).
+3. Captures frequency of the words (Better than OHE).
+
+#### Disadvantages
+
+1. Sparse Matrix problem (similar to OHE) that causes overfitting.
+2. Does not capture semantic meaning of the words. Also the vectors that gets created may have different order of words.
+3. A lot of words are going to get rejected in real-life scenarios.
+4. The out-of-vocabulary issue is present in this as well.
