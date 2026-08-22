@@ -178,3 +178,25 @@ If we compare the implementation with that of One-hot Encoding, we would see how
 2. Does not capture semantic meaning of the words. Also the vectors that gets created may have different order of words.
 3. A lot of words are going to get rejected in real-life scenarios.
 4. The out-of-vocabulary issue is present in this as well.
+
+## N-Grams (bigrams, trigrams etc)
+
+Let us take the following sentences as examples
+S1 -> The food is good
+S2 -> The food is not good
+
+Both the sentences S1 and S2 are completely different from each other.
+
+<!-- vocabulary -> [food not good]
+
+S1 -> [1 0 1]
+S2 -> [1 1 1] -->
+
+With respect to vectors S1 and S2 are very similar. If we make use of combinations, lets say combinations of 2 words (bigrams) or 3 words (trigrams) etc. My vocabulary will become [food, good, not, food not, not good, not good]. With this new vocabulary, the sentences S1 and S2 will become S1 -> [0, 1, 1, 0, 1, 0], S2 -> [0, 1, 1, 1, 0, 0].
+This will capture more context/semantics for the sentences and improve the accuracy of the model.
+The tuple is read as (x, y) where x = starting point and y = ending point (inclusive)
+(1,1) -> monograms only
+(1,2) -> monograms and bigrams
+(1,3) -> monogram, bigram and trigrams etc
+(2,3) -> bigrams, trigrams
+(3,3) -> trigrams only
