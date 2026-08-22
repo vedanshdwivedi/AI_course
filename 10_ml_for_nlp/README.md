@@ -200,3 +200,55 @@ The tuple is read as (x, y) where x = starting point and y = ending point (inclu
 (1,3) -> monogram, bigram and trigrams etc
 (2,3) -> bigrams, trigrams
 (3,3) -> trigrams only
+
+## TF-IDF [Term Frequency - Inverse Document Frequency]
+
+The TF-IDF is an improvement over Bag of Words (BOW). In BOW, all words are treated equally. However, some words (like "the", "a", "is", etc.) are very common and do not contribute much to the meaning of a sentence. TF-IDF assigns a weight to each word based on its frequency in the document and its frequency in the corpus. Words that are frequent in a document but rare in the corpus get higher weights, while words that are frequent in both documents and the corpus get lower weights.
+
+Let us consider the following 3 sentenecs"
+S1 -> good boy
+S2 -> good girl
+S3 -> boy girl good
+
+```
+Term Frequency can be calculated as TF(t,d) = (Frequency of term t in document d) / (Total number of terms in document d)
+
+Inverse Document Frequency can be calculated as IDF(t,D) = log(Total number of documents D / Number of documents containing term t)
+
+TF-IDF(t,d,D) = TF(t,d) \* IDF(t,D)
+```
+
+So for words in sentences, we can calculate term frequency using the above formula
+
+<!-- voc ->  [good         boy          girl]
+S1 ->       (1 / 2)      (1 / 2)          0
+S2 ->       (1 / 2)      0                 1/2
+S3 ->       (1 / 3)      (1 / 3)         1/3      -->
+
+Now we can calculate inverse document frequency using the above formula
+
+<!-- Total no. of documents = 3
+
+IDF(good) = log(3 / 3) = 0
+IDF(boy) = log(3 / 2) = 0.176
+IDF(girl) = log(3 / 2) = 0.176 -->
+
+Now TF-IDF can be caculated as
+
+<!--
+vocabulary ->  good             boy                            girl
+S1         ->  0 [1/2 x 0]      0.088 [1/2 x 0.176]               0                          -> [0, 0.088, 0]
+S2         ->  0 [1/2 x 0]      0                                 0.088 [1/2 x 0.176]        -> [0, 0, 0.088]
+S3         ->  0 [1/3 x 0]      0.117 [1/3 x 0.176]               0.117 [1/3 x 0.176]        -> [0, 0.117, 0.117]
+ -->
+
+#### Advantages
+
+1. Simple and Intuitive
+2. Outputs are of fixed size
+3. Word importance gets captured in this technique which makes it better than OHE and BOW.
+
+#### Disadvantages
+
+1. This method also creates sparse-matrix
+2. Out of vocabulary issue still exists in this method
