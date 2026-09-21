@@ -252,3 +252,90 @@ S3         ->  0 [1/3 x 0]      0.117 [1/3 x 0.176]               0.117 [1/3 x 0
 
 1. This method also creates sparse-matrix
 2. Out of vocabulary issue still exists in this method
+
+## Word Embeddings
+
+![alt text](../course_images/word_embedding.png)
+
+In NLP, Word Embedding is a representation of words as vectors of real numbers. It is a way to convert words into vectors of fixed size, which can be used by machine learning algorithms. The goal of word embeddings is to capture the semantic meaning of words, so that words with similar meanings have similar vector representations.
+
+The word embeddings can be used to solve the out-of-vocabulary issue.
+
+#### Word2Vec
+
+##### Pre-requisite Knowledge: ANN, Loss Functions, Optimisers
+
+Word2Vec is a technique for learning word embeddings from text data. It is a shallow neural network that can be trained to learn word embeddings from text data. There are two main architectures of Word2Vec: Continuous Bag of Words (CBOW) and Skip-gram. In CBOW, the model predicts the current word given the context words. In Skip-gram, the model predicts the context words given the current word. Word2Vec can be used to learn word embeddings from text data, which can then be used for various NLP tasks such as text classification, sentiment analysis, etc.
+
+Each and every word in the vocabulary will be converted to a feature representation. Because of this, similar words are expressed with vectors that are near to each other. Synonyms will be expressed as vectors that are opposite to each other. To find out distance between two vectors, we can use the formula
+
+Distance = 1 - cosine similarity(v1, v2)
+
+Cosine Similarity is the angle between two vectors.
+
+Word2Vec are of two types:
+
+1. CBOW (Continous Bag of Words)
+2. Skipgrams
+
+##### Continous Bag of Words (CBOW)
+
+Lets say we have a corpus that says "XYZ Company is related to data science and artificial intelligence".
+
+- The first thing that we do is to select a window size. Let's say window_size=5. This is an important step to indentify input and output data. This window_size denotes the number of words that we need to select initially. So, in our case, we will select 5 words: [XYZ Company is related to]. From the selected words, we will select the word that is in the middle. Our imput and output will become in this case:
+
+<!--
+Input 	                                Output
+(XYZ, company, related, to)	                (is)
+(Company, is, to, data)                       (related)
+.
+.
+.
+ -->
+
+We are creating this type of structure, so that we get to know, the forward and backword words for "IS" which will be useful for context. Similarly, we will move the window and select the next 5 words, pick the center word, identify forward and backward words. We can take any value for the window_size, however it is recommended to take an odd number.
+
+- Once we have our inputs and outputs using the above step, we will train our model with the data. However, we need to convert the words to vectors before we use it to train the model. The corpus that we used have 10 words in the vocabulary, and lets say if we use One-Hot Encoding, then we will express each word as a vector of 10 dimensions.
+
+- CBOW is a fully connected neural network. If we have taken our window_size=5, then we will have 4 words to be sent as input to the model where each word will be a vector of 10 dimensions, therefore, the input layer will require 40 inputs. Our hidden layer will have the same number of neurons (or inputs) as the window_size (in our case, it is 5), while the output layer will give 1 word which is denoted by a 10-dimension vector, so the output layer will have 10 neurons.
+
+- window_size is usually determined by the feature size (number of features on which we convert the word to the vectors). Therefore each word, gets expressed as 5 feature vector, which is why our hidden layer has the same number of neurons as our window_size (or feature size). Usually the bigger the window size, the better the model performs.
+
+##### Skipgrams
+
+- Let us take the same example [XYZ Company is related to data science and artificial intelligence].
+
+- The difference between CBOW and Skipgrams is that in Skipgrams we will try to predict the context words using the center word, i.e., given the word "is", we will try to predict the words [XYZ, Company, related, to].
+
+- When we create the neural network, our input layer will have 10 neurons to denote a word encoded using OHE. There will be a hidden layer with the same number of neurons as the window_size (in our case, it is 5). Our output layer will have 40 neurons to denote the 4 words.
+
+##### Skipgrams vs CBOW
+
+- Whenever we have a small corpus, we should use CBOW. If the dataset is huge, then we should use skipgrams.
+
+##### Good Practices to improve CBOW or Skipgram window size
+
+- Increase training data
+- Increase window size (more vector dimensions)
+
+##### Advantages of word2vec
+
+1. We get dense matrix, so the problem of sparse matrix (that used to cause overfitting) is solved.
+2. Semantic Info is getting captured.
+3. We get a fixed set of dimensions
+4. Out of vocabulary issue is also eliminated to a great extent
+
+#### Average word2vec
+
+Lets consider the following documents:
+
+<!--
+
+Doc        Text             Output
+D1 -> The food is good          1
+D2 -> The food is bad           0
+D3 -> Pizza is amazing          1
+
+ -->
+
+With word2vec, we take every word and we convert them to vectors. So each of the words across the docs will get converted to vectors of 300 dimensions. Now, we have vectors for each of the words, but we can get 1 vector of 300 dimensions, that expresses the document. That way, we can feed our model and train it. With average word2vec, we can take the average of all the words in the document, calculate average of each dimension and store it in a new vector.
