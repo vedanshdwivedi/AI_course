@@ -71,7 +71,10 @@ Below is the directory index with links to each module's detailed documentation 
 
 ### Module 12: Recurrent Neural Networks (RNN) In-depth
 - **[Chapter 12: Simple RNN In-depth Intuition](./12_rnn_indepth_intuition/README.md)**
-  - *Overview:* Step-by-step mathematical and visual intuition of RNN forward and backward propagation through time.
+  - *Overview:* Step-by-step mathematical and visual intuition of RNN forward propagation, backpropagation through time (BPTT), and the fundamental challenges with vanilla RNNs.
+  - *Key Documents:*
+    - Primary Lecture Notes: [`README.md`](./12_rnn_indepth_intuition/README.md)
+    - Comprehensive BPTT Guide & Formula Reference: [`README-AI.md`](./12_rnn_indepth_intuition/README-AI.md)
   - *Topics covered:*
     - **RNN Forward Propagation with Time:**
       - Sequential feeding of word vectors ($X_{11}, X_{12}, \dots$)
@@ -82,6 +85,13 @@ Below is the directory index with links to each module's detailed documentation 
       - Output prediction ($\hat{y}$) and loss calculation ($\text{Loss} = y - \hat{y}$)
       - Gradient descent minimization to reach global minima
       - Weight updates across time for input layer ($W_i$), hidden recurrent loop ($W_h$), and output layer ($W_o$)
+    - **Limitations of Vanilla RNNs & Vanishing Gradients:**
+      - The **Vanishing Gradient Problem** in long sequences and text generation
+      - Inability to capture long-term dependencies (decay of weight update signals toward zero)
+      - Recency bias (late words dominating learning while early context is lost)
+    - **Mitigations & Gateway to Advanced Architectures:**
+      - Alternative activations (`ReLU`, `Leaky ReLU`) and gradient clipping
+      - Introduction to gated architectures: **LSTM** (Long Short-Term Memory) and **GRU** (Gated Recurrent Unit)
 
 ---
 
@@ -116,7 +126,8 @@ AI_course/
 ├── 11_nlp_in_deep_learning/
 │   └── README.md                      # Chapter 11: Deep Learning for NLP
 ├── 12_rnn_indepth_intuition/
-│   └── README.md                      # Chapter 12: Simple RNN Indepth Intuition
+│   ├── README.md                      # Chapter 12: Simple RNN Intuition & Vanishing Gradients
+│   └── README-AI.md                   # Extended mathematical guide & BPTT formula reference
 ├── course_images/                     # Diagram assets referenced across chapters
 └── datasets/
     └── spam.csv                       # SMS Spam Collection dataset
