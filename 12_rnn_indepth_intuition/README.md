@@ -45,3 +45,28 @@ In Back Propagation, we update [Wi, Wh, Wo]. These weights are updated, until we
 We can understand how weights are updated with the help of the following image
 
 ![alt text](../course_images/image_12_2.jpeg)
+
+## Problems with RNN
+
+So RNNs also have some drawbacks because of which we would be learning about 2 more types of RNNs:
+
+1. LSTM
+2. GRU
+
+However, before proceeding to the above RNNs, we will understand the problems associated with the current RNN.
+
+Just like ANNs, we also face `vanishing gradient problem` in RNNs as well.
+
+### Vanishing Gradient Problem
+
+During the previous topics, the sentences in the datasets that we selected, were very small. Let us consider the use-case of text-generation, where we have to generate text.
+
+In a text generation, the prediction of the next word depends on all of the previous words of the sentence. In case of short sentences, things are normal, but when there is a very long sentence, the prediction of the next word depends on all of the previous words of the sentence. Also, all the words will be passed to the RNN one-by-one. This creates the following problems:
+
+1. The long term dependencies cannot be captured by RNNs. Therefore, RNNs are not good, when there is long dependency. The equations which we are using to update the hidden weights during back-propagation, will gradually become zero as we proceed with long sentences, so the weights won't update much. This means, the words that are closer to the end, will be impactful, while the ones towards the beginning, will have no impact, which is not ideal.
+
+To fix this issue of `vanishing gradient problem`
+
+1. we can use other activation functions such as `ReLU` or `Leaky ReLU`
+2. Use LSTM RNNs
+3. Use GRU RNNs
