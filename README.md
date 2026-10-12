@@ -71,11 +71,17 @@ Below is the directory index with links to each module's detailed documentation 
 
 ### Module 12: Recurrent Neural Networks (RNN) In-depth
 - **[Chapter 12: Simple RNN In-depth Intuition](./12_rnn_indepth_intuition/README.md)**
-  - *Overview:* Step-by-step mathematical and visual intuition of RNN forward propagation across time steps.
+  - *Overview:* Step-by-step mathematical and visual intuition of RNN forward and backward propagation through time.
   - *Topics covered:*
-    - Sequential feeding of word vectors ($X_{11}, X_{12}, \dots$)
-    - Time unfolded forward propagation
-    - Context aggregation via recurrent hidden states ($h_1 \to h_2 \to \dots$)
+    - **RNN Forward Propagation with Time:**
+      - Sequential feeding of word vectors ($X_{11}, X_{12}, \dots$)
+      - Time-unfolded forward propagation and neuron activations:
+        $$O_n = f(X_{in} \cdot W_n + O_{n-1} \cdot W_h + b_n)$$
+      - Context aggregation across time steps via recurrent connections
+    - **RNN Backward Propagation with Time (BPTT):**
+      - Output prediction ($\hat{y}$) and loss calculation ($\text{Loss} = y - \hat{y}$)
+      - Gradient descent minimization to reach global minima
+      - Weight updates across time for input layer ($W_i$), hidden recurrent loop ($W_h$), and output layer ($W_o$)
 
 ---
 
