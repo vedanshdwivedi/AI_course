@@ -10,3 +10,5 @@ memory_profiler
 nltk
 spacy
 svgling
+tensorflow
+tensorboard
