@@ -12,3 +12,4 @@ spacy
 svgling
 tensorflow
 tensorboard
+keras-tuner

@@ -95,6 +95,26 @@ Below is the directory index with links to each module's detailed documentation 
 
 ---
 
+### Module 13: End-to-End ANN Project Implementation
+- **[Chapter 13: ANN Project Implementation & Streamlit Deployment](./13_ann_project_implementation/README.md)**
+  - *Overview:* End-to-end practical deep learning pipelines covering dataset preprocessing, feature engineering, model training, hyperparameter tuning with Keras Tuner, serialization, and interactive Streamlit web applications.
+  - *Core Pipeline Flow:*
+    $$\text{Load Data} \longrightarrow \text{Feature Engineering} \longrightarrow \text{ANN Training} \longrightarrow \text{Regularization / EarlyStopping} \longrightarrow \text{Hyperparameter Tuning} \longrightarrow \text{Serialization} \longrightarrow \text{Streamlit UI}$$
+  - *Projects & Applications:*
+    - **Customer Churn Classification (Binary Classification):**
+      - Notebook training & validation: [`churn_classifier_trainer.ipynb`](./13_ann_project_implementation/churn_classifier_trainer.ipynb)
+      - Offline inference & testing: [`churn_classifier_predictor.ipynb`](./13_ann_project_implementation/churn_classifier_predictor.ipynb)
+      - Interactive Streamlit app: [`app.py`](./13_ann_project_implementation/app.py)
+      - Key topics: Sigmoid activation, Binary Cross-Entropy loss, EarlyStopping callbacks, TensorBoard tracking.
+      - Serialized artifacts: `best_model.keras`, `best_model.h5`, `label_encoder_gender.pkl`, `one_hot_encoder_geography.pkl`, `sclaer.pkl`
+    - **Customer Salary Estimation (ANN Regression):**
+      - Regression training & Keras Tuner architecture search: [`salary_regression_training.ipynb`](./13_ann_project_implementation/salary_regression_training.ipynb)
+      - Interactive Streamlit regression app: [`regressor_app.py`](./13_ann_project_implementation/regressor_app.py)
+      - Key topics: Linear activation for regression, Mean Absolute Error (MAE), automated hyperparameter search via `keras_tuner.RandomSearch` (tuning layers, neuron units, learning rate).
+      - Serialized artifacts: `salary_estimate_model.keras`, `regressor_scaler.pkl`
+
+---
+
 ## 📁 Repository Structure
 
 ```plaintext
@@ -128,8 +148,27 @@ AI_course/
 ├── 12_rnn_indepth_intuition/
 │   ├── README.md                      # Chapter 12: Simple RNN Intuition & Vanishing Gradients
 │   └── README-AI.md                   # Extended mathematical guide & BPTT formula reference
+├── 13_ann_project_implementation/
+│   ├── README.md                      # Chapter 13 Overview & pipeline flow
+│   ├── app.py                         # Customer churn prediction Streamlit app
+│   ├── regressor_app.py               # Salary estimation regression Streamlit app
+│   ├── churn_classifier_trainer.ipynb # Churn ANN training & TensorBoard logging
+│   ├── churn_classifier_predictor.ipynb# Offline inference walkthrough
+│   ├── salary_regression_training.ipynb# Salary regression & Keras Tuner optimization
+│   ├── best_model.keras               # Best trained churn classification model
+│   ├── best_model.h5                  # HDF5 model format
+│   ├── salary_estimate_model.keras    # Best trained salary regression model
+│   ├── label_encoder_gender.pkl       # LabelEncoder for Gender feature
+│   ├── one_hot_encoder_geography.pkl  # OneHotEncoder for Geography feature
+│   ├── sclaer.pkl                     # ColumnTransformer for churn classifier
+│   └── regressor_scaler.pkl           # ColumnTransformer for salary regressor
 ├── course_images/                     # Diagram assets referenced across chapters
+│   ├── image_9_1.png to 9_3.png       # Streamlit UI demos
+│   ├── image_10_1.png to 10_3.png     # NLP & ANN/RNN comparison
+│   ├── image_12_1.png, 12_2.jpeg      # RNN forward/backward propagation
+│   └── image_13_1.png                 # ANN architecture & flow
 └── datasets/
+    ├── Churn_Modelling.csv            # Bank customer churn & salary dataset
     └── spam.csv                       # SMS Spam Collection dataset
 ```
 
@@ -153,3 +192,20 @@ AI_course/
    ```bash
    pip install -r requirements.txt
    ```
+
+4. **Running Interactive Web Applications:**
+   - **Customer Churn Predictor:**
+     ```bash
+     streamlit run 13_ann_project_implementation/app.py
+     ```
+   - **Customer Salary Estimator:**
+     ```bash
+     streamlit run 13_ann_project_implementation/regressor_app.py
+     ```
+
+5. **Visualizing Training with TensorBoard:**
+   ```bash
+   tensorboard --logdir 13_ann_project_implementation/logs/fit
+   ```
+   Open [http://localhost:6006](http://localhost:6006) in your browser to view loss, accuracy, and layer histograms.
+
