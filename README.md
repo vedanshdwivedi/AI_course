@@ -105,13 +105,31 @@ Below is the directory index with links to each module's detailed documentation 
       - Notebook training & validation: [`churn_classifier_trainer.ipynb`](./13_ann_project_implementation/churn_classifier_trainer.ipynb)
       - Offline inference & testing: [`churn_classifier_predictor.ipynb`](./13_ann_project_implementation/churn_classifier_predictor.ipynb)
       - Interactive Streamlit app: [`app.py`](./13_ann_project_implementation/app.py)
-      - Key topics: Sigmoid activation, Binary Cross-Entropy loss, EarlyStopping callbacks, TensorBoard tracking.
-      - Serialized artifacts: `best_model.keras`, `best_model.h5`, `label_encoder_gender.pkl`, `one_hot_encoder_geography.pkl`, `sclaer.pkl`
+      - Key topics: Sigmoid activation, Binary Cross-Entropy loss, Dropout, EarlyStopping callbacks (patience=20), TensorBoard tracking in `logs/fit`.
+      - Serialized artifacts: `best_model.keras`, `best_model.h5`, `model.h5`, `label_encoder_gender.pkl`, `one_hot_encoder_geography.pkl`, `sclaer.pkl`
     - **Customer Salary Estimation (ANN Regression):**
       - Regression training & Keras Tuner architecture search: [`salary_regression_training.ipynb`](./13_ann_project_implementation/salary_regression_training.ipynb)
       - Interactive Streamlit regression app: [`regressor_app.py`](./13_ann_project_implementation/regressor_app.py)
-      - Key topics: Linear activation for regression, Mean Absolute Error (MAE), automated hyperparameter search via `keras_tuner.RandomSearch` (tuning layers, neuron units, learning rate).
+      - Key topics: Linear activation for regression, Mean Absolute Error (MAE), automated hyperparameter search via `keras_tuner.RandomSearch` (tuning hidden layers, neuron units, learning rate).
       - Serialized artifacts: `salary_estimate_model.keras`, `regressor_scaler.pkl`
+
+---
+
+### Module 14: RNN Project Implementation & Word Embeddings
+- **[Chapter 14: RNN Project Implementation & Word Embeddings](./14_rnn_project_implementation/README.md)**
+  - *Overview:* Practical implementation of neural word embeddings and text sequence preprocessing for Recurrent Neural Networks (RNNs) in TensorFlow/Keras on text corpora such as the IMDB Movie Reviews dataset.
+  - *Core Pipeline Flow:*
+    $$\text{Raw Text Sentences} \longrightarrow \text{One-Hot / Integer Encoding (one\_hot)} \longrightarrow \text{Sequence Padding (pad\_sequences)} \longrightarrow \text{Keras Embedding Layer} \longrightarrow \text{Dense Vector Representation (3D Tensor)}$$
+  - *Key Concepts & Techniques:*
+    - **Integer & One-Hot Encoding:** Hashing words into integer token IDs constrained to a defined vocabulary size ($V = 10,000$) using Keras `one_hot()`.
+    - **Sequence Normalization & Padding:** Equalizing variable-length text sentences to uniform sequence lengths ($L = 10$) using `pad_sequences()` with `padding='pre'`.
+    - **Feature Representation with Keras Embedding Layer:** Creating continuous dense vector representations of words where each discrete word index is mapped to a trainable vector of dimension $D = 10$:
+      $$\text{Input: } (N, L) \longrightarrow \text{Embedding}(V, D, \text{input\_length}=L) \longrightarrow \text{Output: } (N, L, D)$$
+    - **Model Construction & Inference:** Compiling `Sequential` models to produce 3D embedding tensors ready for feeding directly into recurrent architectures (SimpleRNN, LSTM, GRU).
+  - *Notebooks & Files:*
+    - Word embedding implementation: [`embedding.ipynb`](./14_rnn_project_implementation/embedding.ipynb)
+    - Chapter documentation: [`README.md`](./14_rnn_project_implementation/README.md)
+    - Target dataset: 50,000 IMDB Movie Reviews Dataset ([`IMDB Dataset.csv`](./datasets/IMDB%20Dataset.csv))
 
 ---
 
@@ -157,18 +175,24 @@ AI_course/
 │   ├── salary_regression_training.ipynb# Salary regression & Keras Tuner optimization
 │   ├── best_model.keras               # Best trained churn classification model
 │   ├── best_model.h5                  # HDF5 model format
+│   ├── model.h5                       # Trained baseline classification model
 │   ├── salary_estimate_model.keras    # Best trained salary regression model
 │   ├── label_encoder_gender.pkl       # LabelEncoder for Gender feature
 │   ├── one_hot_encoder_geography.pkl  # OneHotEncoder for Geography feature
 │   ├── sclaer.pkl                     # ColumnTransformer for churn classifier
 │   └── regressor_scaler.pkl           # ColumnTransformer for salary regressor
+├── 14_rnn_project_implementation/
+│   ├── README.md                      # Chapter 14: RNN Project & Word Embeddings Overview
+│   └── embedding.ipynb                # Keras Embedding layer & sequence padding walkthrough
 ├── course_images/                     # Diagram assets referenced across chapters
 │   ├── image_9_1.png to 9_3.png       # Streamlit UI demos
 │   ├── image_10_1.png to 10_3.png     # NLP & ANN/RNN comparison
 │   ├── image_12_1.png, 12_2.jpeg      # RNN forward/backward propagation
-│   └── image_13_1.png                 # ANN architecture & flow
+│   ├── image_13_1.png                 # ANN architecture & flow
+│   └── word_embedding.png             # Word embedding continuous representation
 └── datasets/
     ├── Churn_Modelling.csv            # Bank customer churn & salary dataset
+    ├── IMDB Dataset.csv               # 50,000 IMDB Movie Reviews dataset for NLP/RNN
     └── spam.csv                       # SMS Spam Collection dataset
 ```
 
@@ -208,4 +232,9 @@ AI_course/
    tensorboard --logdir 13_ann_project_implementation/logs/fit
    ```
    Open [http://localhost:6006](http://localhost:6006) in your browser to view loss, accuracy, and layer histograms.
+
+6. **Running Word Embedding & RNN Notebooks:**
+   ```bash
+   jupyter notebook 14_rnn_project_implementation/embedding.ipynb
+   ```
 
