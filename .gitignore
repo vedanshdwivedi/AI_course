@@ -1,3 +1,6 @@
 venv
 DECISIONS.md
 FLOW.md
+.DS_Store
+__pycache__/
+*.pyc

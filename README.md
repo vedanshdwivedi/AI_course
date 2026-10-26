@@ -74,7 +74,6 @@ Below is the directory index with links to each module's detailed documentation 
   - *Overview:* Step-by-step mathematical and visual intuition of RNN forward propagation, backpropagation through time (BPTT), and the fundamental challenges with vanilla RNNs.
   - *Key Documents:*
     - Primary Lecture Notes: [`README.md`](./12_rnn_indepth_intuition/README.md)
-    - Comprehensive BPTT Guide & Formula Reference: [`README-AI.md`](./12_rnn_indepth_intuition/README-AI.md)
   - *Topics covered:*
     - **RNN Forward Propagation with Time:**
       - Sequential feeding of word vectors ($X_{11}, X_{12}, \dots$)
@@ -117,19 +116,42 @@ Below is the directory index with links to each module's detailed documentation 
 
 ### Module 14: RNN Project Implementation & Word Embeddings
 - **[Chapter 14: RNN Project Implementation & Word Embeddings](./14_rnn_project_implementation/README.md)**
-  - *Overview:* Practical implementation of neural word embeddings and text sequence preprocessing for Recurrent Neural Networks (RNNs) in TensorFlow/Keras on text corpora such as the IMDB Movie Reviews dataset.
+  - *Overview:* Practical implementation of neural word embeddings, text sequence preprocessing, and recurrent neural network classification for sentiment analysis using TensorFlow/Keras on the 50,000 IMDB Movie Reviews dataset.
   - *Core Pipeline Flow:*
-    $$\text{Raw Text Sentences} \longrightarrow \text{One-Hot / Integer Encoding (one\_hot)} \longrightarrow \text{Sequence Padding (pad\_sequences)} \longrightarrow \text{Keras Embedding Layer} \longrightarrow \text{Dense Vector Representation (3D Tensor)}$$
+    $$\text{Raw Text Sentences} \longrightarrow \text{One-Hot / Tokenizer Encoding} \longrightarrow \text{Sequence Padding (pad\_sequences)} \longrightarrow \text{Keras Embedding Layer} \longrightarrow \text{SimpleRNN / LSTM} \longrightarrow \text{Dense Classification} \longrightarrow \text{Streamlit UI}$$
   - *Key Concepts & Techniques:*
-    - **Integer & One-Hot Encoding:** Hashing words into integer token IDs constrained to a defined vocabulary size ($V = 10,000$) using Keras `one_hot()`.
-    - **Sequence Normalization & Padding:** Equalizing variable-length text sentences to uniform sequence lengths ($L = 10$) using `pad_sequences()` with `padding='pre'`.
-    - **Feature Representation with Keras Embedding Layer:** Creating continuous dense vector representations of words where each discrete word index is mapped to a trainable vector of dimension $D = 10$:
-      $$\text{Input: } (N, L) \longrightarrow \text{Embedding}(V, D, \text{input\_length}=L) \longrightarrow \text{Output: } (N, L, D)$$
-    - **Model Construction & Inference:** Compiling `Sequential` models to produce 3D embedding tensors ready for feeding directly into recurrent architectures (SimpleRNN, LSTM, GRU).
+    - **Tokenization & Vocabulary Mapping:** Mapping words to bounded integer indices using `Tokenizer(num_words=10000, oov_token='<OOV>')`.
+    - **Sequence Normalization & Padding:** Equalizing review text lengths to uniform vectors ($L = 200$) using `pad_sequences()` with `padding='post'`.
+    - **Feature Representation with Keras Embedding Layer:** Creating continuous dense vector representations of words where each discrete word index is mapped to a trainable embedding vector ($D = 64$ or $128$).
+    - **Hyperparameter Optimization with Keras Tuner:** Automated architecture search tuning embedding dimensions, recurrent units, dropout regularization, and learning rates.
+    - **Interactive Streamlit Deployment:** Real-time sentiment prediction dashboard featuring cached neural network inference, confidence score calculations, and intuitive visual feedback.
   - *Notebooks & Files:*
-    - Word embedding implementation: [`embedding.ipynb`](./14_rnn_project_implementation/embedding.ipynb)
-    - Chapter documentation: [`README.md`](./14_rnn_project_implementation/README.md)
+    - Word embedding fundamentals: [`embedding.ipynb`](./14_rnn_project_implementation/embedding.ipynb)
+    - RNN training & Keras Tuner architecture search: [`rnn_project.ipynb`](./14_rnn_project_implementation/rnn_project.ipynb)
+    - Interactive Streamlit sentiment app: [`streamlit_app.py`](./14_rnn_project_implementation/streamlit_app.py)
+    - Serialized model: `imdb_review_classification.keras`
+    - Serialized tokenizer: `tokenizer.pickle`
     - Target dataset: 50,000 IMDB Movie Reviews Dataset ([`IMDB Dataset.csv`](./datasets/IMDB%20Dataset.csv))
+
+---
+
+### Module 15: LSTM RNN In-depth Intuition
+- **[Chapter 15: LSTM RNN In-depth Intuition](./15_lstm_rnn_indepth_intuition/)**
+  - *Overview:* In-depth mathematical intuition and architecture walkthrough of Long Short-Term Memory (LSTM) networks, engineered to resolve the vanishing gradient problem in sequential deep learning models.
+  - *Key Concepts & Architecture:*
+    - **Why Simple RNNs Fail on Long Sequences:** Inability to retain early context due to vanishing gradient dynamics during backpropagation through time (BPTT).
+    - **Dual Memory State System:**
+      - **Cell State ($C_t$):** The constant long-term memory conveyor belt carrying essential information across arbitrary time steps with minimal linear interactions.
+      - **Hidden State ($h_t$):** The short-term working memory vector driving step-level predictions and gating decisions.
+    - **The Three Gating Mechanisms:**
+      - **Forget Gate ($f_t$):** Decides what information to discard from the previous cell state using a sigmoid activation:
+        $$f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)$$
+      - **Input Gate ($i_t$) & Candidate Memory ($\tilde{C}_t$):** Decides what new information to add to the cell state:
+        $$i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i), \quad \tilde{C}_t = \tanh(W_c \cdot [h_{t-1}, x_t] + b_c)$$
+        $$C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t$$
+      - **Output Gate ($o_t$):** Regulates the filtered cell state to output the next hidden state:
+        $$o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o), \quad h_t = o_t \odot \tanh(C_t)$$
+    - **Architecture Comparisons:** Comparing parameter efficiency, training stability, and gradient flow between Simple RNNs, LSTMs, and GRUs (Gated Recurrent Units).
 
 ---
 
@@ -141,7 +163,8 @@ AI_course/
 ├── requirements.txt                   # Python package dependencies
 ├── pre_requisites/
 │   └── ann/
-│       └── README.md                  # Prerequisites: Artificial Neural Networks
+│       ├── README.md                  # Prerequisites: Artificial Neural Networks
+│       └── image.png                  # Biological neuron vs. artificial perceptron diagram
 ├── 9_streamlit_with_python/
 │   ├── README.md                      # Chapter 9: Streamlit intro & UI demo
 │   ├── app.py                         # Starter Streamlit application
@@ -164,8 +187,7 @@ AI_course/
 ├── 11_nlp_in_deep_learning/
 │   └── README.md                      # Chapter 11: Deep Learning for NLP
 ├── 12_rnn_indepth_intuition/
-│   ├── README.md                      # Chapter 12: Simple RNN Intuition & Vanishing Gradients
-│   └── README-AI.md                   # Extended mathematical guide & BPTT formula reference
+│   └── README.md                      # Chapter 12: Simple RNN Intuition & Vanishing Gradients
 ├── 13_ann_project_implementation/
 │   ├── README.md                      # Chapter 13 Overview & pipeline flow
 │   ├── app.py                         # Customer churn prediction Streamlit app
@@ -183,7 +205,12 @@ AI_course/
 │   └── regressor_scaler.pkl           # ColumnTransformer for salary regressor
 ├── 14_rnn_project_implementation/
 │   ├── README.md                      # Chapter 14: RNN Project & Word Embeddings Overview
-│   └── embedding.ipynb                # Keras Embedding layer & sequence padding walkthrough
+│   ├── embedding.ipynb                # Keras Embedding layer & sequence padding walkthrough
+│   ├── rnn_project.ipynb              # IMDB sentiment classification & Keras Tuner search
+│   ├── streamlit_app.py               # Interactive Streamlit sentiment analyzer app
+│   ├── imdb_review_classification.keras # Best tuned Keras RNN model
+│   └── tokenizer.pickle               # Fitted word-to-index Tokenizer instance
+├── 15_lstm_rnn_indepth_intuition/     # Chapter 15: LSTM & Gated Recurrent Architectures
 ├── course_images/                     # Diagram assets referenced across chapters
 │   ├── image_9_1.png to 9_3.png       # Streamlit UI demos
 │   ├── image_10_1.png to 10_3.png     # NLP & ANN/RNN comparison
@@ -218,13 +245,17 @@ AI_course/
    ```
 
 4. **Running Interactive Web Applications:**
-   - **Customer Churn Predictor:**
+   - **Customer Churn Predictor (Module 13):**
      ```bash
      streamlit run 13_ann_project_implementation/app.py
      ```
-   - **Customer Salary Estimator:**
+   - **Customer Salary Estimator (Module 13):**
      ```bash
      streamlit run 13_ann_project_implementation/regressor_app.py
+     ```
+   - **IMDB Movie Review Sentiment Analyzer (Module 14):**
+     ```bash
+     streamlit run 14_rnn_project_implementation/streamlit_app.py
      ```
 
 5. **Visualizing Training with TensorBoard:**
@@ -236,5 +267,7 @@ AI_course/
 6. **Running Word Embedding & RNN Notebooks:**
    ```bash
    jupyter notebook 14_rnn_project_implementation/embedding.ipynb
+   jupyter notebook 14_rnn_project_implementation/rnn_project.ipynb
    ```
+
 
